@@ -1,1 +1,1 @@
-# 2025Computation_Theory_Final_Project
+# 2025Theory_Of_Computation_Final_Project
