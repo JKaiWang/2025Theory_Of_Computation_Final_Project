@@ -1,183 +1,62 @@
-TOC 2025 Final Project
-
-Intelligent Agents with Large Language Models (LLMs)
-
-📌 Overview
-
-This project implements an intelligent agent capable of interacting with a Large Language Model (LLM) through API-based communication. The agent is designed to understand user tasks, generate structured prompts, interpret LLM outputs, and execute follow-up actions according to the system’s internal logic.
-
-The goal of this project is to demonstrate the design of autonomous or semi-autonomous AI agents with clear workflow modeling, robust system logic, and practical applications.
-
-🎯 Project Objectives
-
-Build an agent that communicates with a provided LLM API.
-
-Design a well-structured workflow using a State Machine Diagram or DAG.
-
-Implement an end-to-end pipeline including task understanding, prompt generation, API interaction, and action execution.
-
-Deliver a working prototype, live demo, and project report.
-
-🔧 Features
-
-LLM API Integration
-
-Uses the teacher-assigned API key.
-
-Sends structured prompts and receives responses from the LLM.
-
-API usage follows security and responsible-use guidelines.
-
-Agent Workflow Automation
-
-Understands user queries.
-
-Executes logic based on internal states or task type.
-
-Produces actionable outputs (text, summaries, retrieval results, etc.).
-
-Workflow Logic Diagram
-
-A State Machine or DAG illustrating:
-
-Input processing
-
-LLM query construction
-
-Response interpretation
-
-Execution of actions
-
-Terminal or looping state transitions
-
-Extendable Architecture
-
-The project is built with modular components, allowing future expansion into RAG, scheduling, multi-agent interaction, or personalized assistants.
-
-📂 Repository Structure (example)
-project-root/
-│── src/
-│   ├── agent.py
-│   ├── llm_api.py
-│   ├── pipeline.py
-│   └── utils/
-│── diagrams/
-│   └── state_machine.png
-│── data/
-│── README.md
-│── requirements.txt
-│── report.pdf
-
-🛠 Technologies
-
-No programming language restrictions.
-(Example below—modify as needed.)
-
-Python 3.x
-
-Requests / HTTP client for API calls
-
-Matplotlib (optional visualization)
-
-JSON for structured data
-
-Any framework or library based on project needs
-
-🧪 How to Run the Project
-
-Clone this repository:
-
-git clone <your_repo_url>
-cd <your_repo>
-
-
-Install dependencies:
-
-pip install -r requirements.txt
-
-
-Add your API key (provided by TA).
-
-Option A: Create .env
-
-Option B: Export environment variable
-
-export TOC_API_KEY="your_key"
-
-
-Run the agent:
-
-python src/agent.py
-
-📝 State Machine / DAG
-
-Your project includes a system diagram (example):
-
-State 1 — Receive Input
-
-State 2 — Task Classification
-
-State 3 — Prompt Construction
-
-State 4 — LLM API Call
-
-State 5 — Response Parsing
-
-State 6 — Execute Action
-
-State 7 — Output to User / Loop / Terminate
-
-Diagram located in:
-/diagrams/state_machine.png
-
-📊 Evaluation Criteria
-
-As defined by the course:
-
-✔ Essential Requirements (must pass)
-
-Uses the provided LLM API.
-
-Working demo with code accessible on GitHub.
-
-Includes a State Machine Diagram or DAG.
-
-⭐ Encouragement Level (50 pts)
-
-Implements the TA’s toy example or similar baseline.
-
-🚀 Advanced Level (50–100 pts)
-
-Creativity, innovation, and unique features.
-
-Clear and effective presentation.
-
-Clean code with good structure and documentation.
-
-💡 Example Project Ideas (from course)
-
-RAG Agent
-
-Study Helper
-
-Personal Diary Agent (LINE chatbot integration)
-
-Any innovative multi-step reasoning or tool-using agent
-
-👥 Team Information
-
-Team Size: 1–3
-
-All members receive the same score.
-
-(Fill below as needed)
-
-Name	Student ID	Role
-		
-📌 Demo Information
-
-Demos are held around week 17.
-
-TA will provide the sign-up sheet.
-
-TA reserves the right to adjust schedules.
+# ❤️ AI Relationship Analyst Agent ❤️(TOC 2025 Final Project)
+An intelligent agent capable of analyzing chat logs to identify attachment styles and conflict patterns based on Gottman & EFT psychological models.
+
+## Project Description
+This project implements an AI Agent that acts as a relationship counselor. Unlike simple chatbots, this agent uses a State Machine workflow to process long conversation histories, identifies psychological features (Anxious/Avoidant attachment), detects vicious conflict cycles, and generates a comprehensive Relationship Health Report.
+
+The system demonstrates advanced LLM usage, including Function Calling, Token Chunking, and Structured Output Generation.
+
+## Key Features
+* Psychological Profiling: Automatically extracts keywords to determine Attachment Styles (Secure, Anxious, Avoidant).
+* Conflict Pattern Mining: Identifies negative interaction cycles (e.g., "Pursue-Withdraw" patterns).
+* Intelligent Workflow: Uses an FSM to handle large datasets via chunking (intermediate state) rather than simple linear processing.
+* Tool Usage: The LLM dynamically decides whether to perform psychological analysis or conflict mining based on context.
+
+## System Architecture
+### System Flow Chart (DAG)
+<img width="2133" height="693" alt="TOC_flow_chart" src="https://github.com/user-attachments/assets/210470c3-6596-4942-90fd-8ed45d846a4b" />
+
+### Finite State Machine (FSM)
+<img width="1686" height="508" alt="TOC_FSM-2025-11-24-082639" src="https://github.com/user-attachments/assets/c7d192da-142e-4424-8d59-04719ed8d2e8" />
+
+## How to Run
+### Prerequisites
+* Python 3.8+
+* An LLM API Key
+### Installation
+1. Clone the repository:
+   ```text
+   git clone https://github.com/pukyle/2025Theory_Of_Computation_Final_Project.git
+   ```
+2. Install dependencies:
+   ```text
+   pip install -r requirements.txt
+   ```
+3. Set up your API Key:
+   Create a .env file or update config.py.
+   ```text
+   LLM_API_KEY = "your_key_here"
+   ```
+5. Run the Agent:
+   ```text
+   python main.py
+   ```
+## Project Structure
+```text
+.
+├── data/                   # Sample chat logs
+├── src/
+│   ├── agent.py            # Main FSM implementation
+│   ├── tools.py            # Psych & Conflict analysis tools
+│   ├── llm_client.py       # API handling
+│   └── utils.py            # Preprocessing & Chunking
+├── report/                 # Generated HTML reports
+├── main.py                 # Entry point
+├── requirements.txt
+└── README.md
+```
+### Note on Advanced Level Implementation
+This project goes beyond the basic toy example by implementing:
+* Complex State Transitions: Specifically the intermediate loop for handling token limits.
+* Domain-Specific Prompts: Custom prompts engineered for psychological analysis (Gottman method).
+* Dual-Tool Architecture: Separating individual attachment analysis from interaction pattern mining.
