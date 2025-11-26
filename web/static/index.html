@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>AI 情感分析報告生成器</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>AI 情感分析報告生成器 ❤️</h2>
+
+  <label>你的名字</label>
+  <input id="user_name">
+
+  <label>對方的名字</label>
+  <input id="partner_name">
+
+  <label>你們的問題描述</label>
+  <textarea id="context"></textarea>
+
+  <label>聊天紀錄</label>
+  <textarea id="chat_logs"></textarea>
+
+  <button onclick="send()">生成分析報告</button>
+
+  <h3>分析結果</h3>
+  <pre id="output"></pre>
+
+  <a id="downloadBtn" href="#" style="display:none;" download>
+    <button class="download">下載報告</button>
+  </a>
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
