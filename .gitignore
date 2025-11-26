@@ -1,3 +1,5 @@
 API.txt
 src/__pycache__/*
 reports/*
+web/__pycache__
+src/__pycache__
