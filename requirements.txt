@@ -1,4 +1,4 @@
-fastapi
-uvicorn[standard]
-requests
-pydantic
+pip install fastapi
+pip install "uvicorn[standard]"
+pip install requests
+pip install pydantic
