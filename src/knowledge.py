@@ -63,4 +63,4 @@ def get_concept_guide():
            get_attachment_info() + \
            "\n" + \
            get_gottman_info() + \
-           "\n" + "="*60 + "\n"  # 分隔線，下面接正式報告
+           "\n" + "="*60 + "\n"
