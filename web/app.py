@@ -2,10 +2,11 @@
 import os
 import sys
 import uuid
+from datetime import datetime
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles       # ★★★ 新增
+from fastapi.staticfiles import StaticFiles       # ????????? ??��??
 from pydantic import BaseModel
 import uvicorn
 
@@ -17,7 +18,7 @@ from src.interface.web_agent import WebAgent
 
 app = FastAPI()
 
-# ★★★ 讓 FastAPI 正確 serve web/static/ 裡的檔案
+# ????????? �? FastAPI �?�? serve web/static/ 裡�??�?�?
 app.mount("/static", StaticFiles(directory=os.path.join(PROJECT_ROOT, "web/static")), name="static")
 
 app.add_middleware(
@@ -27,6 +28,25 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def ensure_utf8_and_no_cache(request, call_next):
+    """Ensure text responses include charset=utf-8 and disable caching for static/download routes."""
+    response = await call_next(request)
+
+    try:
+        path = request.url.path
+        if path.startswith("/static") or path.startswith("/download") or path.startswith("/download_chat"):
+            response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+
+        ctype = response.headers.get("content-type", "")
+        if ctype.startswith("text/") and "charset" not in ctype.lower():
+            response.headers["Content-Type"] = f"{ctype}; charset=utf-8"
+    except Exception:
+        pass
+
+    return response
 
 
 class AnalysisRequest(BaseModel):
@@ -58,6 +78,44 @@ async def analyze(data: AnalysisRequest):
         "report": report,
         "download_url": f"/download/{file_id}"
     }
+
+
+@app.post("/save_history")
+async def save_history(data: AnalysisRequest):
+    """Save raw chat history to `chat_sessions/` as JSON and return a download URL."""
+    if not os.path.exists("chat_sessions"):
+        os.makedirs("chat_sessions")
+
+    file_id = str(uuid.uuid4())
+    filepath = f"chat_sessions/chat_{file_id}.json"
+
+    payload = {
+        "user_name": data.user_name,
+        "partner_name": data.partner_name,
+        "context": data.context,
+        "chat_logs": data.chat_logs,
+        "timestamp": datetime.utcnow().isoformat()
+    }
+
+    import json
+    with open(filepath, "w", encoding="utf-8") as f:
+        f.write(json.dumps(payload, ensure_ascii=False, indent=2))
+
+    return {"file_id": file_id, "download_url": f"/download_chat/{file_id}"}
+
+
+@app.get("/download_chat/{file_id}")
+async def download_chat(file_id: str):
+    filepath = f"chat_sessions/chat_{file_id}.json"
+
+    if not os.path.exists(filepath):
+        return JSONResponse({"error": "File not found"}, status_code=404)
+
+    return FileResponse(
+        filepath,
+        filename=f"chat_session_{file_id}.json",
+        media_type="application/json"
+    )
 
 
 @app.get("/download/{file_id}")

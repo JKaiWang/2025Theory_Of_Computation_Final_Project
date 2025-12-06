@@ -1,34 +1,47 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>AI 情感分析報告生成器</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Relationship Analysis Assistant (TOC Project)</title>
   <link rel="stylesheet" href="/static/style.css">
+  <style>/* small inline safety to ensure readable font */ body { font-family: "Noto Sans", "Segoe UI", Arial, sans-serif; }</style>
 </head>
 <body>
 
 <div class="container">
-  <h2>AI 情感分析報告生成器 ❤️</h2>
+  <h2>AI Relationship Analysis Assistant</h2>
 
-  <label>你的名字</label>
-  <input id="user_name">
+  <label for="user_name">Your Name</label>
+  <input id="user_name" placeholder="Enter the primary person's name">
 
-  <label>對方的名字</label>
-  <input id="partner_name">
+  <label for="partner_name">Partner's Name</label>
+  <input id="partner_name" placeholder="Enter the partner's name">
 
-  <label>你們的問題描述</label>
-  <textarea id="context"></textarea>
+  <label for="context">Context / Background</label>
+  <textarea id="context" placeholder="Describe the situation or background for this conversation"></textarea>
 
-  <label>聊天紀錄</label>
-  <textarea id="chat_logs"></textarea>
+  <label for="chat_logs">Chat Logs (one message per line)</label>
+  <textarea id="chat_logs" placeholder="Example:\nAlice: Hi\nBob: Hello"></textarea>
 
-  <button onclick="send()">生成分析報告</button>
+  <div>
+    <button onclick="send()">Generate Analysis Report</button>
+    <button onclick="saveChat()">Save Chat History</button>
+    <input type="file" id="loadChatFile" accept="application/json" style="display:none" />
+    <button onclick="document.getElementById('loadChatFile').click()">Load Chat History</button>
+  </div>
 
-  <h3>分析結果</h3>
+  <!-- Status area: shows progress during analysis -->
+  <div id="status" role="status" aria-live="polite" style="margin-top:12px;color:#333"></div>
+
+  <h3>Analysis Output</h3>
   <pre id="output"></pre>
 
   <a id="downloadBtn" href="#" style="display:none;" download>
-    <button class="download">下載報告</button>
+    <button class="download">Download Report</button>
+  </a>
+  <a id="downloadChatBtn" href="#" style="display:none;" download>
+    <button class="download">Download Chat</button>
   </a>
 </div>
 
