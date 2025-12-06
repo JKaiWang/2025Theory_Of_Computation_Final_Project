@@ -1,4 +1,4 @@
-# ❤️ AI Relationship Analyst Agent ❤️(TOC 2025 Final Project)
+# ??��?? AI Relationship Analyst Agent ??��??(TOC 2025 Final Project)
 An intelligent agent capable of analyzing chat logs to identify attachment styles and conflict patterns based on Gottman & EFT psychological models.
 
 ## Project Description
@@ -44,16 +44,16 @@ The system demonstrates advanced LLM usage, including Function Calling, Token Ch
 ## Project Structure
 ```text
 .
-├── data/                   # Sample chat logs
-├── src/
-│   ├── agent.py            # Main FSM implementation
-│   ├── tools.py            # Psych & Conflict analysis tools
-│   ├── llm_client.py       # API handling
-│   └── utils.py            # Preprocessing & Chunking
-├── report/                 # Generated HTML reports
-├── main.py                 # Entry point
-├── requirements.txt
-└── README.md
+????????? data/                   # Sample chat logs
+????????? src/
+???   ????????? agent.py            # Main FSM implementation
+???   ????????? tools.py            # Psych & Conflict analysis tools
+???   ????????? llm_client.py       # API handling
+???   ????????? utils.py            # Preprocessing & Chunking
+????????? report/                 # Generated HTML reports
+????????? main.py                 # Entry point
+????????? requirements.txt
+????????? README.md
 ```
 ### Note on Advanced Level Implementation
 This project goes beyond the basic toy example by implementing:
@@ -76,3 +76,20 @@ uvicorn web.app:app --reload
 ```
 http://localhost:8000
 ```
+
+
+## How to Use Save Chat History and Load Chat History (Web UI)
+
+### Save Chat History
+1. Fill in the form: Your Name, Partner's Name, Context, and Chat Logs.
+2. Click **Save Chat History**. The current chat session will be saved as a JSON file on the server.
+3. A **Download Chat** button will appear. Click it to download the chat history (`.json` file) to your computer.
+
+### Load Chat History
+1. Click **Load Chat History**. A file picker will appear.
+2. Select a previously saved chat history JSON file (e.g., `chat_xxx.json`).
+3. The form will be automatically filled with the loaded chat data.
+4. You can add new messages to the **Chat Logs** field.
+5. Click **Save Chat History** again to save the updated chat session (it will create a new JSON file).
+
+This workflow allows you to archive, reload, and append new messages to your chat sessions easily.
