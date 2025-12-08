@@ -25,8 +25,13 @@ async function send() {
     try {
         const data = await r.json();
 
-        // show result
-        document.getElementById("output").textContent = data.report;
+        // 修正: 使用 marked.parse() 將 Markdown 轉為 HTML，並用 innerHTML 寫入
+        if (typeof marked !== 'undefined') {
+            document.getElementById("output").innerHTML = marked.parse(data.report);
+        } else {
+            // 如果 marked 沒載入成功，則退回純文字顯示
+            document.getElementById("output").textContent = data.report;
+        }
 
         // show download link if available
         if (data.download_url) {
@@ -40,6 +45,9 @@ async function send() {
         statusEl.textContent = "An error occurred while processing the analysis.";
         console.error(err);
     } finally {
+        // 修正: 無論結果如何，隱藏載入畫面
+        document.getElementById("loadingModal").style.display = "none"; 
+        // 重新啟用按鈕
         buttons.forEach(b => b.disabled = false);
     }
 }

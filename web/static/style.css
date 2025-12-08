@@ -1,6 +1,20 @@
+/* ========================================================== */
+/* === 新增動態滑入動畫 Keyframes === */
+/* ========================================================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 /* --- 整體與排版 --- */
 body {
-    /* 保持柔和的漸變背景 */
     background: linear-gradient(135deg, #f0f4f8, #c9d6de); 
     font-family: 'Helvetica Neue', Arial, sans-serif;
     color: #333;
@@ -24,17 +38,17 @@ body {
 
 h2 {
     text-align: center;
-    color: #FFB6C1; /* 新主色調: 較柔和的淡粉色 (Light Pink) */
+    color: #FFB6C1; 
     margin-bottom: 30px;
     font-size: 1.8em;
-    border-bottom: 2px solid #fff3f5; /* 搭配新主色調 */
+    border-bottom: 2px solid #fff3f5;
     padding-bottom: 10px;
 }
 
 h3 {
-    color: #FFB6C1; /* 新主色調 */
+    color: #FFB6C1; 
     margin-top: 30px;
-    border-left: 5px solid #ffdde3; /* 搭配新主色調 */
+    border-left: 5px solid #ffdde3;
     padding-left: 10px;
 }
 
@@ -47,7 +61,7 @@ label {
     font-size: 0.95em;
 }
 
-/* --- 輸入框與按鈕 --- */
+/* --- 輸入框與按鈕 (輸入框保持不變) --- */
 input, textarea {
     width: 100%;
     padding: 12px;
@@ -60,7 +74,7 @@ input, textarea {
 }
 
 input:focus, textarea:focus {
-    border-color: #FFB6C1; /* 焦點顏色 */
+    border-color: #FFB6C1; 
     outline: none;
     box-shadow: 0 0 5px rgba(255, 182, 193, 0.7);
 }
@@ -70,67 +84,136 @@ textarea {
     resize: vertical;
 }
 
-button {
+/* *** 按鈕樣式: 預設粉色(#FFB6C1)，懸停變暗(#e6a4ad) *** */
+button, 
+input[type="submit"], 
+input[type="button"],
+.download {
     width: 100%;
     padding: 15px;
     margin-top: 20px;
-    border: none;
+    border: none; 
     border-radius: 8px;
     font-size: 1.1em;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+    
+    /* 預設狀態：粉色背景 */
+    background: #FFB6C1; 
+    color: #333; 
+    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.5);
+    background-image: none !important;
 }
 
-button:active {
+button:active, 
+input[type="submit"]:active, 
+input[type="button"]:active,
+.download:active {
     transform: scale(0.98);
 }
 
-/* 生成報告按鈕 */
-.container > button {
-    background: #FFB6C1; /* 新主色調 (較柔和) */
-    color: #333; /* 為了保持對比，使用深色文字 */
-    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.5);
+/* 懸停效果：背景變暗 */
+button:hover, 
+input[type="submit"]:hover, 
+input[type="button"]:hover,
+.download:hover {
+    background: #e6a4ad; 
+    color: #ffffff; 
 }
+/* *** 按鈕樣式結束 *** */
 
-.container > button:hover {
-    background: #e6a4ad; /* 懸停時變暗 */
-    color: white; /* 懸停時文字轉白以保持美觀 */
-}
-
-/* 下載報告按鈕 */
-button.download {
-    background: #4CAF50; /* 綠色保持不變 */
-    color: white;
-    margin-top: 10px;
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
-}
-
-button.download:hover {
-    background: #388e3c; /* 綠色懸停時變暗 */
-}
 
 /* 下載連結的包裝 */
-#downloadBtn {
+#downloadBtn, #downloadChatBtn {
     text-decoration: none;
     display: block !important;
     width: 100%;
     margin-top: 15px;
 }
 
-/* --- 輸出區塊 --- */
-pre {
+
+/* ========================================================== */
+/* === 應用滑入動畫 (一格一格跑進來) === */
+/* ========================================================== */
+
+.container > * {
+    /* 讓容器內所有直接子元素都隱藏，等待動畫 */
+    opacity: 0; 
+    animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* 根據 HTML 結構，為每個元素設定遞增的延遲時間 */
+
+/* 1. H2 標題 (AI Relationship Analysis Assistant) */
+.container h2 {
+    animation-delay: 0.1s;
+}
+
+/* 2. Your Name (label + input) */
+.container label:nth-of-type(1), 
+.container input:nth-of-type(1) {
+    animation-delay: 0.2s;
+}
+
+/* 3. Partner's Name (label + input) */
+.container label:nth-of-type(2), 
+.container input:nth-of-type(2) {
+    animation-delay: 0.4s;
+}
+
+/* 4. Context / Background (label + textarea) */
+.container label:nth-of-type(3), 
+.container textarea:nth-of-type(1) {
+    animation-delay: 0.6s;
+}
+
+/* 5. Chat Logs (label + textarea) */
+.container label:nth-of-type(4), 
+.container textarea:nth-of-type(2) {
+    animation-delay: 0.8s;
+}
+
+/* 6. 按鈕群組 div (Generate / Save / Load) */
+.container > div:nth-of-type(1) { 
+    animation-delay: 1.0s; 
+}
+
+/* 7. Status area */
+#status {
+    animation-delay: 1.2s; 
+}
+
+/* 8. H3 標題 (Analysis Output) */
+.container h3 {
+    animation-delay: 1.3s;
+}
+
+/* 9. Output 區塊 (div) */
+#output {
+    animation-delay: 1.4s;
+}
+
+/* 10. Download 按鈕 (兩個 download a 標籤) */
+.container a {
+    animation-delay: 1.6s;
+}
+
+
+/* --- 輸出區塊樣式 (針對 #output div) --- */
+#output {
     background: #fffafa; 
     padding: 18px;
     border-radius: 10px;
-    border: 1px solid #ffe6eb; /* 柔和的邊框，搭配新主色調 */
-    white-space: pre-wrap;
+    border: 1px solid #ffe6eb; 
+    white-space: normal; /* 確保 Markdown 渲染後可以正常換行 */
     font-size: 0.95em;
     color: #444;
     overflow-x: auto;
+    min-height: 100px;
 }
 
-/* --- Loading Modal --- */
+/* --- Loading Modal (保持不變) --- */
 .loading-modal {
     position: fixed;
     top: 0;
@@ -150,15 +233,15 @@ pre {
     border-radius: 16px;
     text-align: center;
     font-size: 1.1em;
-    color: #FFB6C1; /* 主色調 */
+    color: #FFB6C1; 
     box-shadow: 0 5px 20px rgba(0,0,0,0.3);
 }
 
 .spinner {
     width: 60px;
     height: 60px;
-    border: 6px solid #fceef0; /* 柔和的底色 */
-    border-top-color: #FFB6C1; /* 主色調轉動部分 */
+    border: 6px solid #fceef0; 
+    border-top-color: #FFB6C1; 
     border-radius: 50%;
     animation: spin 0.9s linear infinite;
     margin: 0 auto 20px;
@@ -167,4 +250,26 @@ pre {
 @keyframes spin {
     from { transform: rotate(0deg); }
     to   { transform: rotate(360deg); }
+}
+
+#output strong, 
+#output b,
+#output h1,
+#output h2,
+#output h3 {
+    /* 確保顏色為深黑色 */
+    color: #111 !important; 
+    /* 確保字體為粗體，標準 Markdown 應該是 700 */
+    font-weight: 700 !important; 
+}
+
+/* 新增: 確保有序/無序清單內部的粗體字也生效 */
+#output li strong {
+    color: #111; 
+    font-weight: 700; 
+}
+
+/* 優化: 增加清單項目之間的間距，讓報告內容更易讀 */
+#output li {
+    margin-bottom: 8px; /* 增加清單項目的底部間距 */
 }

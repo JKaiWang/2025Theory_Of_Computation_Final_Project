@@ -31,11 +31,10 @@
     <button onclick="document.getElementById('loadChatFile').click()">Load Chat History</button>
   </div>
 
-  <!-- Status area: shows progress during analysis -->
   <div id="status" role="status" aria-live="polite" style="margin-top:12px;color:#333"></div>
 
   <h3>Analysis Output</h3>
-  <pre id="output"></pre>
+  <div id="output"></div>
 
   <a id="downloadBtn" href="#" style="display:none;" download>
     <button class="download">Download Report</button>
@@ -45,7 +44,6 @@
   </a>
 </div>
 
-<!-- ===== Loading Modal ===== -->
 <div id="loadingModal" class="loading-modal" style="display:none;">
   <div class="loading-box">
     <div class="spinner"></div>
@@ -53,6 +51,7 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="/static/script.js"></script>
 </body>
 </html>
