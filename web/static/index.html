@@ -1,53 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>AI Relationship Analysis Assistant (TOC Project)</title>
+  <title>AI 情感諮商室</title>
   <link rel="stylesheet" href="/static/style.css">
-  <style>/* small inline safety to ensure readable font */ body { font-family: "Noto Sans", "Segoe UI", Arial, sans-serif; }</style>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div class="container">
-  <h2>AI Relationship Analysis Assistant</h2>
+<div class="scene">
+  <div class="book">
+    
+    <div class="left-page-base">
+      <div class="left-page-base-content" id="agent-content-base">
+        <div class="agent-avatar-wrapper"><div class="agent-face">🤖</div></div>
+        <div class="speech-bubble">
+          <p id="agent-text-base">嗨，我是你的 AI 情感諮商師。<br>我們慢慢來，先告訴我怎麼稱呼你？</p>
+        </div>
+      </div>
+    </div>
 
-  <label for="user_name">Your Name</label>
-  <input id="user_name" placeholder="Enter the primary person's name">
+    <div class="right-page-container">
 
-  <label for="partner_name">Partner's Name</label>
-  <input id="partner_name" placeholder="Enter the partner's name">
+      <div class="step" id="step-1">
+        <div class="step-front">
+          <h2>Chapter 1. 關於你</h2>
+          <div class="form-group">
+            <label>請問怎麼稱呼您？</label>
+            <input type="text" id="user_name" placeholder="例如：Kyle" oninput="validateStep(1)" autocomplete="off">
+          </div>
+          <div class="action-row">
+            <button class="btn-text" onclick="document.getElementById('loadChatFile').click()">📂 讀取舊檔</button>
+            <input type="file" id="loadChatFile" accept="application/json" style="display:none" />
+            <button class="btn-next" id="btn-next-1" onclick="nextStep(2)" disabled>翻下一頁 ➜</button>
+          </div>
+          <div class="page-number">1</div>
+        </div>
+        <div class="step-back"><div class="step-back-content" id="agent-content-1"><div class="agent-avatar-wrapper"><div class="agent-face">🤖</div></div><div class="speech-bubble"><p class="agent-text-p" id="agent-text-1">...</p></div></div></div>
+      </div>
 
-  <label for="context">Context / Background</label>
-  <textarea id="context" placeholder="Describe the situation or background for this conversation"></textarea>
+      <div class="step" id="step-2">
+        <div class="step-front">
+          <h2>Chapter 2. 關於對方</h2>
+          <div class="form-group">
+            <label>想聊聊關於誰的事呢？</label>
+            <input type="text" id="partner_name" placeholder="例如：Eason" oninput="validateStep(2)" autocomplete="off">
+          </div>
+          <div class="action-row">
+            <button class="btn-prev" onclick="prevStep(1)">⇦ 上一頁</button>
+            <button class="btn-next" id="btn-next-2" onclick="nextStep(3)" disabled>翻下一頁 ➜</button>
+          </div>
+          <div class="page-number">2</div>
+        </div>
+        <div class="step-back"><div class="step-back-content" id="agent-content-2"><div class="agent-avatar-wrapper"><div class="agent-face">🤖</div></div><div class="speech-bubble"><p class="agent-text-p" id="agent-text-2">...</p></div></div></div>
+      </div>
 
-  <label for="chat_logs">Chat Logs (one message per line)</label>
-  <textarea id="chat_logs" placeholder="Example:\nAlice: Hi\nBob: Hello"></textarea>
+      <div class="step" id="step-3">
+        <div class="step-front">
+          <h2>Chapter 3. 背景故事</h2>
+          <div class="form-group">
+            <label>發生了什麼事？</label>
+            <p class="tip">請簡述目前的狀況...</p>
+            <textarea id="context" placeholder="我們最近因為..." oninput="validateStep(3)"></textarea>
+          </div>
+          <div class="action-row">
+            <button class="btn-prev" onclick="prevStep(2)">⇦ 上一頁</button>
+            <button class="btn-next" id="btn-next-3" onclick="nextStep(4)" disabled>翻下一頁 ➜</button>
+          </div>
+          <div class="page-number">3</div>
+        </div>
+        <div class="step-back"><div class="step-back-content" id="agent-content-3"><div class="agent-avatar-wrapper"><div class="agent-face">🤖</div></div><div class="speech-bubble"><p class="agent-text-p" id="agent-text-3">...</p></div></div></div>
+      </div>
 
-  <div>
-    <button onclick="send()">Generate Analysis Report</button>
-    <button onclick="saveChat()">Save Chat History</button>
-    <input type="file" id="loadChatFile" accept="application/json" style="display:none" />
-    <button onclick="document.getElementById('loadChatFile').click()">Load Chat History</button>
-  </div>
+      <div class="step" id="step-4">
+        <div class="step-front">
+          <h2>Chapter 4. 對話紀錄</h2>
+          <div class="form-group">
+            <label>請貼上聊天內容</label>
+            <p class="tip">一行一句...</p>
+            <textarea id="chat_logs" class="chat-area" placeholder="" oninput="validateStep(4)"></textarea>
+          </div>
+          <div class="action-row">
+            <button class="btn-prev" onclick="prevStep(3)">⇦ 上一頁</button>
+            <button class="btn-submit" id="btn-submit" onclick="send()" disabled>✨ 開始分析</button>
+          </div>
+          <div class="page-number">4</div>
+        </div>
+        <div class="step-back"><div class="step-back-content" id="agent-content-4"><div class="agent-avatar-wrapper"><div class="agent-face">🤖</div></div><div class="speech-bubble"><p class="agent-text-p" id="agent-text-4">...</p></div></div></div>
+      </div>
 
-  <div id="status" role="status" aria-live="polite" style="margin-top:12px;color:#333"></div>
+      <div class="step" id="step-5">
+        <div class="step-front center-box">
+          <div class="spinner-book"><div class="spinner-page"></div></div>
+          <h3 style="color:#d65d7a; margin-bottom:10px;">AI 正在閱讀...</h3>
+          <p id="loading-text">深度分析依附類型與溝通模式中</p>
+          <div class="action-row" style="justify-content: center; margin-top: 30px;">
+             <button class="btn-next" id="btn-result-ready" onclick="nextStep(6)" disabled>分析中...</button>
+          </div>
+          <div class="page-number">5</div>
+        </div>
+        
+        <div class="step-back">
+          <div class="step-back-content-text scrollable-content" id="report-part-1"></div>
+        </div>
+      </div>
 
-  <h3>Analysis Output</h3>
-  <div id="output"></div>
+      <div class="step" id="step-6">
+        <div class="step-front">
+           <div id="report-part-2" class="scrollable-content"></div>
+           <div class="action-row">
+              <button class="btn-prev" onclick="prevStep(5)">⇦ 上一頁</button>
+              <button class="btn-next" onclick="nextStep(7)">下一頁 ➜</button>
+           </div>
+           <div class="page-number">6</div>
+        </div>
+        <div class="step-back">
+          <div class="step-back-content-text scrollable-content" id="report-part-3"></div>
+        </div>
+      </div>
 
-  <a id="downloadBtn" href="#" style="display:none;" download>
-    <button class="download">Download Report</button>
-  </a>
-  <a id="downloadChatBtn" href="#" style="display:none;" download>
-    <button class="download">Download Chat</button>
-  </a>
-</div>
+      <div class="step" id="step-7">
+        <div class="step-front">
+           <div id="report-part-4" class="scrollable-content"></div>
+           <div class="action-row">
+              <button class="btn-prev" onclick="prevStep(6)">⇦ 上一頁</button>
+              <button class="btn-next" onclick="nextStep(8)">下一頁 ➜</button>
+           </div>
+           <div class="page-number">7</div>
+        </div>
+        <div class="step-back">
+          <div class="step-back-content-text scrollable-content" id="report-part-5"></div>
+        </div>
+      </div>
 
-<div id="loadingModal" class="loading-modal" style="display:none;">
-  <div class="loading-box">
-    <div class="spinner"></div>
-    <p>Waiting for generate report...</p>
+      <div class="step" id="step-8">
+        <div class="step-front">
+           <div id="report-part-6" class="scrollable-content"></div>
+           <div class="action-row">
+              <button class="btn-prev" onclick="prevStep(7)">⇦ 上一頁</button>
+              <button class="btn-next" onclick="nextStep(9)">下一頁 ➜</button>
+           </div>
+           <div class="page-number">8</div>
+        </div>
+        <div class="step-back">
+          <div class="step-back-content-text scrollable-content" id="report-part-7"></div>
+        </div>
+      </div>
+
+      <div class="step" id="step-9">
+        <div class="step-front">
+           <div id="report-part-8" class="scrollable-content"></div>
+           <div class="action-row">
+              <button class="btn-prev" onclick="prevStep(8)">⇦ 上一頁</button>
+              <button class="btn-next" onclick="nextStep(10)">下一頁 ➜</button>
+           </div>
+           <div class="page-number">9</div>
+        </div>
+        <div class="step-back">
+          <div class="step-back-content-text scrollable-content" id="report-part-9"></div>
+        </div>
+      </div>
+
+      <div class="step" id="step-10">
+        <div class="step-front">
+           <div id="report-part-10" class="scrollable-content"></div>
+           <div class="action-row">
+              <button class="btn-prev" onclick="prevStep(9)">⇦ 上一頁</button>
+              <button class="btn-next" onclick="nextStep(11)">查看結語 ➜</button>
+           </div>
+           <div class="page-number">10</div>
+        </div>
+        <div class="step-back">
+          <div class="step-back-content-text scrollable-content" id="report-part-11"></div>
+        </div>
+      </div>
+
+      <div class="step" id="step-11">
+        <div class="step-front center-box">
+           <h2 style="color:#d65d7a;">諮商結束</h2>
+           <p>感謝您的信任，希望這份報告能成為改變的起點。</p>
+           
+           <div class="action-row compact-actions" style="flex-direction: column; gap: 15px;">
+              <a id="downloadBtn" href="#" download style="display:none; width: 100%;">
+                <button class="btn-next" style="width: 100%;">📥 下載完整 PDF 報告</button>
+              </a>
+              <button class="btn-secondary" onclick="saveChat()">💾 儲存對話紀錄</button>
+              <button class="btn-text" onclick="location.reload()">🔄 開始新的諮商</button>
+              <a id="downloadChatBtn" href="#" download style="display:none;"></a>
+           </div>
+           
+           <div class="action-row">
+              <button class="btn-prev" onclick="prevStep(10)">⇦ 回顧報告</button>
+           </div>
+           <div class="page-number">End</div>
+        </div>
+        <div class="step-back"></div>
+      </div>
+
+    </div>
   </div>
 </div>
 
