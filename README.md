@@ -41,6 +41,16 @@ The system demonstrates advanced LLM usage, including Function Calling, Token Ch
    ```text
    python main.py
    ```
+   or
+   ```text
+   uvicorn web.app:app --reload
+   ```
+   
+6. Open your browser
+   ```text
+   http://localhost:8000
+   ```
+
 ## Project Structure
 ```text
 2025Theory_Of_Computation_Final_Project/
@@ -79,23 +89,6 @@ This project goes beyond the basic toy example by implementing:
 * Complex State Transitions: Specifically the intermediate loop for handling token limits.
 * Domain-Specific Prompts: Custom prompts engineered for psychological analysis (Gottman method).
 * Dual-Tool Architecture: Separating individual attachment analysis from interaction pattern mining.
-
-### Run Web UI Version 
-1. Install some package 
-```
-! pip install -r requirements.txt
-```
-
-2. Run code 
-
-```
-uvicorn web.app:app --reload
-```
-1. Open your browser
-```
-http://localhost:8000
-```
-
 
 ## How to Use Save Chat History and Load Chat History (Web UI)
 
