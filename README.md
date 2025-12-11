@@ -1,4 +1,4 @@
-# ??��?? AI Relationship Analyst Agent ??��??(TOC 2025 Final Project)
+# AI Relationship Analyst Agent (TOC 2025 Final Project)
 An intelligent agent capable of analyzing chat logs to identify attachment styles and conflict patterns based on Gottman & EFT psychological models.
 
 ## Project Description
@@ -43,17 +43,36 @@ The system demonstrates advanced LLM usage, including Function Calling, Token Ch
    ```
 ## Project Structure
 ```text
-.
-????????? data/                   # Sample chat logs
-????????? src/
-???   ????????? agent.py            # Main FSM implementation
-???   ????????? tools.py            # Psych & Conflict analysis tools
-???   ????????? llm_client.py       # API handling
-???   ????????? utils.py            # Preprocessing & Chunking
-????????? report/                 # Generated HTML reports
-????????? main.py                 # Entry point
-????????? requirements.txt
-????????? README.md
+2025Theory_Of_Computation_Final_Project/
+│
+├── chat_sessions/          # [Data Storage] Stores user-saved chat histories (.json)
+│
+├── src/                    # [Core Logic] Main source code directory for the AI Agent
+│   ├── interface/          # Interface integration modules (e.g., WebAgent wrapper)
+│   ├── agent.py            # Agent state machine and core decision-making logic
+│   ├── config.py           # Configuration (environment variables, parameters)
+│   ├── knowledge.py        # Psychological knowledge base (Gottman/EFT models)
+│   ├── llm_client.py       # LLM API client wrapper
+│   └── prompts.py          # System prompts and instruction management
+│
+├── tools/                  # [Utilities] Helper scripts for testing or development
+│
+├── web/                    # [Web App] FastAPI backend and frontend assets
+│   ├── static/             # Static assets directory (Frontend Core)
+│   │   ├── index.html      # Main HTML: 3D book UI, cover, and forms
+│   │   ├── script.js       # Frontend logic: Animations, API calls, report rendering
+│   │   ├── style.css       # Stylesheets: 3D book effects, hard cover, RWD layout
+│   │   └── wood.jpg        # Asset: Background texture image
+│   │
+│   └── app.py              # FastAPI Backend: Routes, analysis logic, file downloads
+│
+├── web_reports/            # [Output] Stores generated analysis reports (.md)
+│
+├── .env                    # Environment variables (API keys, secrets)
+├── .gitignore              # Git ignore configuration
+├── main.py                 # Main entry point (CLI mode or integration testing)
+├── README.md               # Project documentation
+└── requirements.txt        # Python dependency list
 ```
 ### Note on Advanced Level Implementation
 This project goes beyond the basic toy example by implementing:
