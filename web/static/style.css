@@ -183,3 +183,97 @@ button { padding: 10px 25px; font-size: 1.1em; border-radius: 50px; border: none
 
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 @keyframes flip { 0% { transform: perspective(200px) rotateY(0); } 100% { transform: perspective(200px) rotateY(-180deg); opacity: 0; } }
+
+/* ===============================
+   Chat Mode (對話模式)
+   =============================== */
+
+.mode-switch {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+}
+.mode-switch button {
+  margin-left: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 2px solid var(--accent-color);
+  background: #fff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#chat-overlay {
+  position: fixed;
+  inset: 0;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+#chat-box {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  font-family: 'Nunito', sans-serif;
+}
+
+.chat-user {
+  align-self: flex-end;
+  background: var(--accent-color);
+  color: white;
+  margin: 8px 0 8px auto;
+  padding: 10px 15px;
+  border-radius: 20px 20px 0 20px;
+  max-width: 70%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.chat-ai {
+  align-self: flex-start;
+  background: #ffffff;
+  margin: 8px auto 8px 0;
+  padding: 10px 15px;
+  border-radius: 20px 20px 20px 0;
+  max-width: 70%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.chat-input-row {
+  display: flex;
+  padding: 20px;
+  gap: 10px;
+  background: #ffffff;
+  border-top: 1px solid #ddd;
+}
+
+.chat-input-row input {
+  flex: 1;
+  padding: 10px 15px;
+  font-size: 1.1em;
+  border-radius: 20px;
+  border: 2px solid #ccc;
+}
+.chat-input-row input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.chat-input-row button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background: var(--accent-color);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.chat-input-row button:hover {
+  background: #c04b66;
+}
+.chat-ai.thinking {
+  font-style: italic;
+  opacity: 0.7;
+}

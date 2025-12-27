@@ -223,3 +223,74 @@ function parseAndDistribute(fullMarkdown, inputData) {
 // Load / Save (不變)
 document.getElementById('loadChatFile').addEventListener('change', function(e) { /*...*/ });
 async function saveChat() { /*...*/ }
+
+// ===============================
+// Chat Mode (對話模式)
+// ===============================
+
+let chatSession = null;
+
+function setMode(mode) {
+  document.querySelector(".scene").style.display = mode === "book" ? "block" : "none";
+  document.getElementById("chat-overlay").style.display = mode === "chat" ? "flex" : "none";
+}
+
+async function enterChatMode() {
+  setMode("chat");
+
+  const r = await fetch("/chat/start", { method: "POST" });
+  const d = await r.json();
+
+  chatSession = d.session_id;
+  const box = document.getElementById("chat-box");
+  box.innerHTML = `<div class="chat-ai">${d.reply}</div>`;
+}
+
+async function sendChat() {
+  const input = document.getElementById("chat-input");
+  const msg = input.value.trim();
+  if (!msg || !chatSession) return;
+  input.value = "";
+
+  const box = document.getElementById("chat-box");
+  box.innerHTML += `<div class="chat-user">${msg}</div>`;
+
+  // 建立暫時 AI 氣泡
+  const thinkingBubble = document.createElement("div");
+  thinkingBubble.className = "chat-ai thinking";
+  thinkingBubble.textContent = "思考中.";
+  box.appendChild(thinkingBubble);
+  box.scrollTop = box.scrollHeight;
+
+  // 動畫
+  let dots = 1;
+  const timer = setInterval(() => {
+    dots = (dots % 3) + 1;
+    thinkingBubble.textContent = "思考中" + ".".repeat(dots);
+  }, 500);
+
+  try {
+    const r = await fetch("/chat/message", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        session_id: chatSession,
+        message: msg
+      })
+    });
+
+    const d = await r.json();
+
+    clearInterval(timer);
+    thinkingBubble.textContent = d.reply;
+    thinkingBubble.classList.remove("thinking");
+
+  } catch (err) {
+    clearInterval(timer);
+    thinkingBubble.textContent = "（發生錯誤，請再試一次）";
+    console.error(err);
+  }
+
+  box.scrollTop = box.scrollHeight;
+}
+

@@ -6,7 +6,7 @@ from datetime import datetime
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
-from fastapi.staticfiles import StaticFiles       # ????????? ??°å??
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import uvicorn
 
@@ -14,11 +14,15 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 sys.path.append(PROJECT_ROOT)
 
 from src.interface.web_agent import WebAgent
+from src.agent import ChatAgent
 
 
 app = FastAPI()
 
-# ????????? è®? FastAPI æ­?ç¢? serve web/static/ è£¡ç??æª?æ¡?
+# ===== Chat Sessions =====
+chat_sessions = {}
+
+# ===== Static =====
 app.mount("/static", StaticFiles(directory=os.path.join(PROJECT_ROOT, "web/static")), name="static")
 
 app.add_middleware(
@@ -29,12 +33,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+# ===== Middleware =====
 @app.middleware("http")
 async def ensure_utf8_and_no_cache(request, call_next):
-    """Ensure text responses include charset=utf-8 and disable caching for static/download routes."""
     response = await call_next(request)
-
     try:
         path = request.url.path
         if path.startswith("/static") or path.startswith("/download") or path.startswith("/download_chat"):
@@ -45,10 +47,9 @@ async def ensure_utf8_and_no_cache(request, call_next):
             response.headers["Content-Type"] = f"{ctype}; charset=utf-8"
     except Exception:
         pass
-
     return response
 
-
+# ===== Models =====
 class AnalysisRequest(BaseModel):
     user_name: str
     partner_name: str
@@ -56,6 +57,20 @@ class AnalysisRequest(BaseModel):
     chat_logs: str
 
 
+class ChatStartResponse(BaseModel):
+    session_id: str
+    reply: str
+
+
+class ChatMessageRequest(BaseModel):
+    session_id: str
+    message: str
+
+
+class ChatMessageResponse(BaseModel):
+    reply: str
+
+# ===== Book Mode =====
 @app.post("/analyze")
 async def analyze(data: AnalysisRequest):
     report = WebAgent.generate_report(
@@ -65,27 +80,20 @@ async def analyze(data: AnalysisRequest):
         chat_logs=data.chat_logs
     )
 
-    if not os.path.exists("web_reports"):
-        os.makedirs("web_reports")
-
+    os.makedirs("web_reports", exist_ok=True)
     file_id = str(uuid.uuid4())
     filepath = f"web_reports/report_{file_id}.md"
 
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(report)
 
-    return {
-        "report": report,
-        "download_url": f"/download/{file_id}"
-    }
+    return {"report": report, "download_url": f"/download/{file_id}"}
 
 
+# ===== Save History =====
 @app.post("/save_history")
 async def save_history(data: AnalysisRequest):
-    """Save raw chat history to `chat_sessions/` as JSON and return a download URL."""
-    if not os.path.exists("chat_sessions"):
-        os.makedirs("chat_sessions")
-
+    os.makedirs("chat_sessions", exist_ok=True)
     file_id = str(uuid.uuid4())
     filepath = f"chat_sessions/chat_{file_id}.json"
 
@@ -99,39 +107,50 @@ async def save_history(data: AnalysisRequest):
 
     import json
     with open(filepath, "w", encoding="utf-8") as f:
-        f.write(json.dumps(payload, ensure_ascii=False, indent=2))
+        json.dump(payload, f, ensure_ascii=False, indent=2)
 
     return {"file_id": file_id, "download_url": f"/download_chat/{file_id}"}
 
 
+# ===== Chat Mode =====
+@app.post("/chat/start", response_model=ChatStartResponse)
+async def chat_start():
+    sid = str(uuid.uuid4())
+    agent = ChatAgent()
+    chat_sessions[sid] = agent
+    return {"session_id": sid, "reply": agent.history[-1]["content"]}
+
+
+@app.post("/chat/message", response_model=ChatMessageResponse)
+async def chat_message(data: ChatMessageRequest):
+    agent = chat_sessions.get(data.session_id)
+    if agent is None:
+        return JSONResponse({"error": "invalid session"}, status_code=400)
+
+    reply = agent.reply(data.message)
+    return {"reply": reply}
+
+
+# ===== Downloads =====
 @app.get("/download_chat/{file_id}")
 async def download_chat(file_id: str):
     filepath = f"chat_sessions/chat_{file_id}.json"
-
     if not os.path.exists(filepath):
         return JSONResponse({"error": "File not found"}, status_code=404)
 
-    return FileResponse(
-        filepath,
-        filename=f"chat_session_{file_id}.json",
-        media_type="application/json"
-    )
+    return FileResponse(filepath, filename=f"chat_session_{file_id}.json", media_type="application/json")
 
 
 @app.get("/download/{file_id}")
 async def download(file_id: str):
     filepath = f"web_reports/report_{file_id}.md"
-
     if not os.path.exists(filepath):
         return JSONResponse({"error": "File not found"}, status_code=404)
 
-    return FileResponse(
-        filepath,
-        filename=f"analysis_report_{file_id}.md",
-        media_type="text/markdown"
-    )
+    return FileResponse(filepath, filename=f"analysis_report_{file_id}.md", media_type="text/markdown")
 
 
+# ===== Root =====
 @app.get("/")
 async def root():
     return FileResponse(os.path.join(PROJECT_ROOT, "web/static/index.html"))

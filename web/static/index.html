@@ -8,6 +8,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
 </head>
 <body>
+<div class="mode-switch">
+  <button onclick="setMode('book')">📖 諮商模式</button>
+  <button onclick="enterChatMode()">💬 對話模式</button>
+</div>
+
+<div id="chat-overlay" style="display:none;">
+  <div id="chat-box"></div>
+  <div class="chat-input-row">
+    <input id="chat-input" placeholder="輸入訊息..." onkeydown="if(event.key==='Enter') sendChat()" />
+    <button onclick="sendChat()">送出</button>
+  </div>
+</div>
 
 <div class="scene">
   <div class="book">

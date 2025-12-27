@@ -37,3 +37,18 @@ class PsychAgent:
             return "（分析失敗：模型無回應）"
 
         return get_concept_guide() + "\n" + llm_output
+class ChatAgent:
+    def __init__(self):
+        self.history = [
+            {"role": "system", "content": "你是一位溫和、專業的情感諮詢聊天機器人。"},
+            {"role": "assistant", "content": "您好 😊 請問今天想聊什麼呢？"}
+        ]
+    def reply(self, user_message: str) -> str:
+        self.history.append({"role": "user", "content": user_message})
+        response = get_completion(self.history)
+
+        if not response:
+            response = "抱歉，我剛剛有點分心了，可以再說一次嗎？"
+
+        self.history.append({"role": "assistant", "content": response})
+        return response
