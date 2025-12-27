@@ -220,6 +220,79 @@ function parseAndDistribute(fullMarkdown, inputData) {
     }
 }
 
-// Load / Save (不變)
-document.getElementById('loadChatFile').addEventListener('change', function(e) { /*...*/ });
-async function saveChat() { /*...*/ }
+// ===============================
+// Load / Save Logic (Implementation)
+// ===============================
+
+// 1. Loading Chat History
+document.getElementById('loadChatFile').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+
+            // Fill in the fields
+            if (data.user_name) document.getElementById('user_name').value = data.user_name;
+            if (data.partner_name) document.getElementById('partner_name').value = data.partner_name;
+            if (data.context) document.getElementById('context').value = data.context;
+            if (data.chat_logs) document.getElementById('chat_logs').value = data.chat_logs;
+
+            // Trigger validation to enable buttons
+            validateStep(1);
+            validateStep(2);
+            validateStep(3);
+            validateStep(4);
+
+            alert("讀取成功！");
+        } catch (err) {
+            console.error(err);
+            alert("讀取失敗，檔案格式可能錯誤。");
+        }
+    };
+    reader.readAsText(file);
+    // Reset value so the same file can be selected again if needed
+    event.target.value = '';
+});
+
+// 2. Saving Chat History
+async function saveChat() {
+    const payload = {
+        user_name: document.getElementById("user_name").value,
+        partner_name: document.getElementById("partner_name").value,
+        context: document.getElementById("context").value,
+        chat_logs: document.getElementById("chat_logs").value,
+    };
+
+    try {
+        const response = await fetch("/save_history", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+
+        if (data.download_url) {
+            // Use the hidden anchor tag in index.html to trigger download
+            const a = document.getElementById("downloadChatBtn");
+            a.href = data.download_url;
+            a.download = `chat_history_${data.file_id || 'backup'}.json`;
+            a.click();
+        } else {
+            alert("儲存失敗：未收到下載連結");
+        }
+
+    } catch (error) {
+        console.error("Error saving chat:", error);
+        alert("儲存失敗，請檢查伺服器連線。");
+    }
+}
