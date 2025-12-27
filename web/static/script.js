@@ -282,7 +282,7 @@ async function sendChat() {
     const d = await r.json();
 
     clearInterval(timer);
-    thinkingBubble.textContent = d.reply;
+    thinkingBubble.innerHTML = marked.parse(d.reply);
     thinkingBubble.classList.remove("thinking");
 
   } catch (err) {
@@ -369,4 +369,10 @@ async function saveChat() {
         console.error("Error saving chat:", error);
         alert("儲存失敗，請檢查伺服器連線。");
     }
+}
+function handleChatKey(event) {
+  if (event.key === "Enter" && !event.isComposing) {
+    event.preventDefault();
+    sendChat();
+  }
 }

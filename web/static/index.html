@@ -16,7 +16,7 @@
 <div id="chat-overlay" style="display:none;">
   <div id="chat-box"></div>
   <div class="chat-input-row">
-    <input id="chat-input" placeholder="輸入訊息..." onkeydown="if(event.key==='Enter') sendChat()" />
+    <input id="chat-input" placeholder="輸入訊息..." onkeydown="handleChatKey(event)" />
     <button onclick="sendChat()">送出</button>
   </div>
 </div>

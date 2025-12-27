@@ -218,6 +218,18 @@ button { padding: 10px 25px; font-size: 1.1em; border-radius: 50px; border: none
   padding: 30px;
   overflow-y: auto;
   font-family: 'Nunito', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-user,
+.chat-ai {
+  display: inline-block;
+  width: fit-content;
+  max-width: 80%;
+  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.5;
 }
 
 .chat-user {
@@ -227,7 +239,6 @@ button { padding: 10px 25px; font-size: 1.1em; border-radius: 50px; border: none
   margin: 8px 0 8px auto;
   padding: 10px 15px;
   border-radius: 20px 20px 0 20px;
-  max-width: 70%;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
@@ -237,7 +248,6 @@ button { padding: 10px 25px; font-size: 1.1em; border-radius: 50px; border: none
   margin: 8px auto 8px 0;
   padding: 10px 15px;
   border-radius: 20px 20px 20px 0;
-  max-width: 70%;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
@@ -273,7 +283,15 @@ button { padding: 10px 25px; font-size: 1.1em; border-radius: 50px; border: none
 .chat-input-row button:hover {
   background: #c04b66;
 }
+
 .chat-ai.thinking {
   font-style: italic;
   opacity: 0.7;
+}
+
+.chat-ai p {
+  margin: 0.3em 0;
+}
+.chat-ai ul {
+  padding-left: 1.2em;
 }
