@@ -33,6 +33,9 @@ This project is hosted on Render's free tier. If the website is inactive for **1
 
 **When you visit the link, you may see a loading screen similar to the image below. Please be patient and wait for about 30 seconds to 1 minute for the server to wake up.**
 
+<img width="1906" height="808" alt="530450654-ce6891df-d117-4821-a7d1-edce5ef8fb8f" src="https://github.com/user-attachments/assets/276a33e9-c9dd-43e8-8ba8-ee7654889bc9" />
+
+
 
 
 ---
