@@ -14,12 +14,11 @@ The system demonstrates advanced LLM usage, including Function Calling, Token Ch
 
 ## System Architecture
 ### System Flow Chart (DAG)
-<img width="2048" height="1149" alt="608204238_1798851854002595_5450054142039596381_n" src="https://github.com/user-attachments/assets/17d24c12-1050-4b96-9b6d-06da1b41198f" />
+<img width="10804" height="3650" alt="Untitled diagram-2025-12-28-174102" src="https://github.com/user-attachments/assets/6807c1f6-bcac-4b8d-bcc5-73acaa825db0" />
 
 
 ### Finite State Machine (FSM)
-<img width="2048" height="1146" alt="605294279_1618832789556733_268023525418260658_n" src="https://github.com/user-attachments/assets/1afa58df-4476-4d2b-b5a0-638fd64e9333" />
-
+<img width="10804" height="3650" alt="Untitled diagram-2025-12-28-174102" src="https://github.com/user-attachments/assets/824bfcce-cb5e-46e1-be3d-a14c37edb194" />
 
 
 ## Quick Start (Online Demo)
