@@ -6,20 +6,20 @@ This project implements an AI Agent that acts as a relationship counselor. Unlik
 
 The system demonstrates advanced LLM usage, including Function Calling, Token Chunking, and Structured Output Generation.
 
+<img width="1190" height="668" alt="image" src="https://github.com/user-attachments/assets/2faadec8-b292-4efe-9986-2f0a9ef9df3f" />
+<img width="1196" height="671" alt="image" src="https://github.com/user-attachments/assets/4873b009-9bfd-4c17-ab01-47c6df17e985" />
+<img width="1191" height="672" alt="image" src="https://github.com/user-attachments/assets/287836d4-c813-4ed9-a26d-bb96e579f143" />
+<img width="1195" height="672" alt="image" src="https://github.com/user-attachments/assets/36647b67-f16d-4bf5-b7e7-f85970101866" />
+<img width="1495" height="841" alt="image" src="https://github.com/user-attachments/assets/366e0dfc-98af-49bc-ac4d-3d6fc5a334d1" />
+<img width="1493" height="842" alt="image" src="https://github.com/user-attachments/assets/0a4808c7-b16f-498e-ae93-6a9507aa2386" />
+
 ## Key Features
 * Psychological Profiling: Automatically extracts keywords to determine Attachment Styles (Secure, Anxious, Avoidant).
 * Conflict Pattern Mining: Identifies negative interaction cycles (e.g., "Pursue-Withdraw" patterns).
 * Intelligent Workflow: Uses an FSM to handle large datasets via chunking (intermediate state) rather than simple linear processing.
 * Tool Usage: The LLM dynamically decides whether to perform psychological analysis or conflict mining based on context.
-
-## System Architecture
-### System Flow Chart (DAG)
-<img width="6816" height="3824" alt="Untitled diagram-2025-12-28-164046" src="https://github.com/user-attachments/assets/f7e077e0-0e18-43f3-b32a-508dc6dcb3ab" />
-
-
-### Finite State Machine (FSM)
-<img width="10804" height="3650" alt="Untitled diagram-2025-12-28-174102" src="https://github.com/user-attachments/assets/824bfcce-cb5e-46e1-be3d-a14c37edb194" />
-
+<img width="1492" height="846" alt="image" src="https://github.com/user-attachments/assets/892512b4-72ae-49a1-a0e2-a6a387e649dc" />
+<img width="1495" height="842" alt="image" src="https://github.com/user-attachments/assets/f40bd4f6-f7b5-4992-a288-72312aa1abe2" />
 
 ## Quick Start (Online Demo)
 
@@ -55,6 +55,16 @@ This mode provides in-depth analysis. Please describe your relationship issue an
 This mode offers real-time interaction. You can chat with the AI companion for immediate responses and emotional support, just like talking to a friend.
 
 <img width="1918" height="983" alt="image" src="https://github.com/user-attachments/assets/3f7c5deb-fb92-4179-b9b4-8729f481be3d" />
+
+## Case Study
+<img width="1496" height="841" alt="image" src="https://github.com/user-attachments/assets/eb94fcfc-ebf1-4a01-a281-7a2b58fc0130" />
+<img width="1491" height="838" alt="image" src="https://github.com/user-attachments/assets/202f114c-abb7-4081-9a23-a438ec2ff104" />
+<img width="1496" height="837" alt="image" src="https://github.com/user-attachments/assets/6c0c2ae8-90d0-4ce2-8971-2907b04f3e8d" />
+<img width="1497" height="843" alt="image" src="https://github.com/user-attachments/assets/929ce67b-bf7d-45ea-932a-a247361b8d9b" />
+<img width="1493" height="840" alt="image" src="https://github.com/user-attachments/assets/b89de1cb-48e2-45ae-afcc-a67a57302adf" />
+<img width="1492" height="837" alt="image" src="https://github.com/user-attachments/assets/7a56de81-ca26-45cc-9778-8d969d6bd1ee" />
+<img width="1492" height="842" alt="image" src="https://github.com/user-attachments/assets/af46d795-cd4b-4558-a1a6-15366542dc86" />
+<img width="1492" height="838" alt="image" src="https://github.com/user-attachments/assets/ac1160d5-0cb0-47d0-abab-eff7400c240a" />
 
 <br>
 
